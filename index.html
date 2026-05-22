@@ -169,6 +169,11 @@ img{
     <img src="carneasada.jpeg">
     <img src="gif.gif">
   </div>
+    <!-- 🌦️ PASO 17: AQUÍ VA EL CLIMA -->
+  <div id="widget-clima" style="margin:20px auto; padding:15px; border-radius:10px; background:#e6f4ff; text-align:center;">
+    🌦️ Cargando clima...
+  </div>
+
 
 </section>
 
@@ -674,7 +679,61 @@ function verMas() {
   cargarCitas();
 
 }
+// 🌦️ ========= CLIMA =========
 
+async function cargarClima() {
+
+  const ciudad = "Chichimila,Yucatan,MX";
+  const apiKey = "ce7a0aa6815c08fc39793d921f9a1df6";// 👈 AQUÍ PONES TU CLAVE REAL
+
+  const url =
+  `https://api.openweathermap.org/data/2.5/weather?q=${ciudad}&appid=${apiKey}&units=metric&lang=es`;
+
+  try {
+
+    const respuesta = await fetch(url);
+
+    if (!respuesta.ok) {
+      throw new Error("Error clima");
+    }
+
+    const datos = await respuesta.json();
+
+    const temperatura = Math.round(datos.main.temp);
+    const descripcion = datos.weather[0].description;
+
+    let recomendacion = "";
+
+    if (temperatura > 30) {
+      recomendacion = "☀️ Hace calor, hidrátate bien antes de venir.";
+    } 
+    else if (temperatura < 20) {
+      recomendacion = "❄️ Clima fresco, ideal para comida caliente.";
+    } 
+    else {
+      recomendacion = "🌤️ Clima perfecto para comer en El Buen Sazón.";
+    }
+
+    document.getElementById("widget-clima").innerHTML = `
+      <h3>🌦️ Clima en ${ciudad}</h3>
+      <p>🌡️ ${temperatura}°C</p>
+      <p>${descripcion}</p>
+      <strong>${recomendacion}</strong>
+    `;
+
+  } catch (error) {
+
+    document.getElementById("widget-clima").innerHTML =
+    "⚠️ No se pudo cargar el clima";
+
+    console.error(error);
+
+  }
+
+}
+
+// 🚀 Ejecutar al cargar página
+document.addEventListener("DOMContentLoaded", cargarClima);
 
 /* CARGAR PEDIDOS */
 
