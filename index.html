@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Cocina Económica El Buen Sazón</title>
+
+<style>
+
+body{
+  font-family: Arial, sans-serif;
+  margin: 0;
+  background-color: #b6f621;
+}
+
+/* HEADER */
+
+header{
+  background: linear-gradient(90deg, #ec0f0f, #657c19);
+  color: white;
+  padding: 20px;
+  text-align: center;
+}
+
+/* NAV */
+
+nav{
+  background-color: #3ff5b5;
+  padding: 10px;
+  text-align: center;
+}
+
+nav a{
+  color: rgb(25, 23, 23);
+  margin: 10px;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+/* SECCIONES */
+
+section{
+  padding: 20px;
+  margin: 15px auto;
+  background-color: white;
+  border-radius: 15px;
+  max-width: 1000px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+h2{
+  color: #1d1a1a;
+}
+
+/* INPUTS */
+
+input, select{
+  padding: 10px;
+  margin: 8px;
+  width: 280px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+/* BOTONES */
+
+button{
+  padding: 10px 15px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  background-color: #3981e6;
+  color: white;
+  transition: 0.3s;
+}
+
+button:hover{
+  transform: scale(1.05);
+  background-color: #9d0208;
+}
+
+/* FOOTER */
+
+footer{
+  background-color: #9d0208;
+  color: white;
+  text-align: center;
+  padding: 15px;
+  margin-top: 20px;
+}
+
+/* OCULTO */
+
+.oculto{
+  display: none;
+}
+
+/* IMÁGENES */
+
+img{
+  width: 300px;
+  height: auto;
+  object-fit: cover;
+  display: block;
+  margin: 20px auto;
+  border-radius: 10px;
+}
+
+/* GALERÍA */
+
+.galeria{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* PEDIDOS */
+
+.pedido{
+  background: #d6cdcd;
+  border-left: 6px solid #3981e6;
+  padding: 15px;
+  margin: 10px 0;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+
+  opacity: 0;
+  transform: translateY(20px);
+  animation: aparecer 0.5s ease forwards;
+}
+
+@keyframes aparecer{
+  to{
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+  <h1>🍽️ Cocina Económica "El Buen Sazón"</h1>
+  <p>Comida casera, rica y económica todos los días</p>
+</header>
+
+<nav>
+  <a href="#inicio">Inicio</a>
+  <a href="#servicios">Menú</a>
+  <a href="#contacto">Contacto</a>
+  <a href="#login">Acceso</a>
+</nav>
+
+<!-- INICIO -->
+
+<section id="inicio">
+
+  <h2>🍽️ Quiénes somos</h2>
+
+  <p>
+    Somos una cocina económica dedicada a ofrecer comida casera deliciosa,
+    preparada con ingredientes frescos y a precios accesibles.
+  </p>
+
+  <div class="galeria">
+    <img src="mondongo.jpeg">
+    <img src="carneasada.jpeg">
+    <img src="gif.gif">
+  </div>
+
+</section>
+
+<!-- MENÚ -->
+
+<section id="servicios">
+
+  <h2>🍽️ Menú del día</h2>
+
+  <p>Descubre nuestros platillos caseros preparados diariamente</p>
+
+  <div class="galeria">
+    <img src="menu.jpeg">
+    <img src="Bebidasyrefrescos.jpeg">
+  </div>
+
+  <h3>🥘 Servicios que ofrecemos:</h3>
+
+  <p>🍽️ Comidas</p>
+  <p>🍲 Guisados del día</p>
+  <p>🌮 Tacos</p>
+  <p>🥤 Bebidas</p>
+
+</section>
+
+<!-- CONTACTO -->
+
+<section id="contacto">
+
+  <h2>📞 Contacto</h2>
+
+  <img src="contacto.png" alt="Contacto">
+
+  <p>📱 <strong>Teléfono:</strong> 999-123-4567</p>
+  <p>📧 <strong>Email:</strong> elbuensazon@gmail.com</p>
+
+</section>
+
+<!-- LOGIN -->
+
+<section id="login">
+
+  <h2>🔐 Acceso de usuarios</h2>
+
+  <input type="email" id="email" placeholder="📧 Correo electrónico"><br>
+
+  <input type="password" id="password" placeholder="🔒 Contraseña"><br>
+
+  <button onclick="registrar()">📝 Registrarse</button>
+
+  <button onclick="login()">🔓 Iniciar sesión</button>
+
+  <button onclick="logout()">🚪 Cerrar sesión</button>
+
+  <p id="estado"></p>
+
+</section>
+
+<!-- ZONA PRIVADA -->
+
+<section id="zonaPrivada" class="oculto">
+
+  <h2>🛒 Realizar pedido</h2>
+
+  <input type="text" id="nombre" placeholder="👤 Nombre completo"><br>
+
+  <!-- SELECT DEL MENÚ -->
+-->
+  <!-- BEBIDA -->
+<label>🥤 Selecciona una bebida</label><br>
+
+<select id="bebida">
+
+  <option value="">Selecciona una bebida</option>
+  <option data-precio="0" value="Ninguna">🚫 Ninguna (sin bebida)</option>
+
+  <!-- REFRESCOS -->
+  <option data-precio="18" value="Coca-Cola 350ml">Coca-Cola Lata 350ml - $18</option>
+  <option data-precio="18" value="Fanta 350ml">Fanta Lata 350ml - $18</option>
+  <option data-precio="18" value="Sprite 350ml">Sprite Lata 350ml - $18</option>
+  <option data-precio="18" value="Orange Crush 350ml">Orange Crush Lata 350ml - $18</option>
+
+  <!-- AGUA -->
+  <option data-precio="15" value="Agua 600ml">Agua 600ml - $15</option>
+
+  <!-- JUGOS NATURALES -->
+  <option data-precio="35" value="Jugo de Frutilla">Jugo de Frutilla (Fresa) 400ml - $35</option>
+  <option data-precio="35" value="Jugo de Piña">Jugo de Piña 400ml - $35</option>
+  <option data-precio="35" value="Jugo de Mora">Jugo de Mora 400ml - $35</option>
+  <option data-precio="35" value="Jugo de Mango">Jugo de Mango 400ml - $35</option>
+  <option data-precio="35" value="Jugo de Maracuyá">Jugo de Maracuyá 400ml - $35</option>
+  
+</select>
+
+<br><br>
+
+<!-- PLATILLOS -->
+<label>🍽️ Selecciona un platillo</label><br>
+<select id="servicio">
+
+  <option value="">Selecciona un platillo</option>
+
+  <option data-precio="70" value="Pollo en chipotle">Pollo en chipotle - Orden $70</option>
+  <option data-precio="45" value="Pollo en chipotle">Pollo en chipotle - Media orden $45</option>
+
+  <option data-precio="60" value="Hígado encebollado">Hígado encebollado - Orden $60</option>
+  <option data-precio="35" value="Hígado encebollado">Hígado encebollado - Media orden $35</option>
+
+  <option data-precio="80" value="Relleno negro">Relleno negro - Orden $80</option>
+  <option data-precio="50" value="Relleno negro">Relleno negro - Media orden $50</option>
+
+  <option data-precio="80" value="Pavo mechado">Pavo mechado - Orden $80</option>
+  <option data-precio="50" value="Pavo mechado">Pavo mechado - Media orden $50</option>
+
+  <option data-precio="75" value="Escabeche oriental">Escabeche oriental - Orden $75</option>
+  <option data-precio="45" value="Escabeche oriental">Escabeche oriental - Media orden $45</option>
+
+  <option data-precio="65" value="Potaje">Potaje - Orden $65</option>
+  <option data-precio="40" value="Potaje">Potaje - Media orden $40</option>
+
+  <option data-precio="85" value="Puchero de 3 carnes">Puchero de 3 carnes - Orden $85</option>
+  <option data-precio="55" value="Puchero de 3 carnes">Puchero de 3 carnes - Media orden $55</option>
+
+  <option data-precio="65" value="Albóndigas">Albóndigas - Orden $65</option>
+  <option data-precio="40" value="Albóndigas">Albóndigas - Media orden $40</option>
+
+  <option data-precio="65" value="Carne molida">Carne molida - Orden $65</option>
+  <option data-precio="40" value="Carne molida">Carne molida - Media orden $40</option>
+
+  <option data-precio="60" value="Picadillo">Picadillo - Orden $60</option>
+  <option data-precio="35" value="Picadillo">Picadillo - Media orden $35</option>
+
+  <option data-precio="75" value="Biztec a la cazuela">Bistec a la cazuela - Orden $75</option>
+  <option data-precio="45" value="Biztec a la cazuela">Bistec a la cazuela - Media orden $45</option>
+
+  <option data-precio="70" value="Pollo asado">Pollo asado - Orden $70</option>
+  <option data-precio="45" value="Pollo asado">Pollo asado - Media orden $45</option>
+
+  <option data-precio="75" value="Pollo pibil">Pollo pibil - Orden $75</option>
+  <option data-precio="45" value="Pollo pibil">Pollo pibil - Media orden $45</option>
+
+  <option data-precio="70" value="Puerco entomatado">Puerco entomatado - Orden $70</option>
+  <option data-precio="45" value="Puerco entomatado">Puerco entomatado - Media orden $45</option>
+
+  <option data-precio="60" value="Caldo pollo c/ verduras">Caldo pollo c/ verduras - Orden $60</option>
+  <option data-precio="35" value="Caldo pollo c/ verduras">Caldo pollo c/ verduras - Media orden $35</option>
+
+  <option data-precio="70" value="Pollo en salsa verde">Pollo en salsa verde - Orden $70</option>
+  <option data-precio="45" value="Pollo en salsa verde">Pollo en salsa verde - Media orden $45</option>
+
+  <option data-precio="70" value="Puerco en salsa verde">Puerco en salsa verde - Orden $70</option>
+  <option data-precio="45" value="Puerco en salsa verde">Puerco en salsa verde - Media orden $45</option>
+
+  <option data-precio="75" value="Costillas asadas">Costillas asadas - Orden $75</option>
+  <option data-precio="45" value="Costillas asadas">Costillas asadas - Media orden $45</option>
+
+</select>
+
+ <br>
+
+ <input
+type="number"
+id="cantidad"
+placeholder="📦 Cantidad de órdenes"
+min="1"
+value="1">
+
+<br>
+
+<input type="date" id="fecha"><br>
+
+<input type="time" id="horaEntrega"><br>
+
+<button onclick="guardarCita()"> 🍽️ Confirmar pedido</button>
+
+</section>
+
+<!-- PEDIDOS -->
+
+<section>
+
+  <h2>📦 Pedidos registrados</h2>
+
+  <h3 id="contador">Total pedidos: 0</h3>
+
+  <div id="listaCitas"></div>
+
+  <button onclick="verMas()">Ver más</button>
+
+</section>
+
+<footer>
+  <p>© 2026 Cocina Económica El Buen Sazón</p>
+</footer>
+
+<!-- FIREBASE -->
+
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+
+<script>
+
+/* FIREBASE */
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBgDlRePpdCkCafOKXfioIw0xDY6wxnMBk",
+  authDomain: "cocina-economica-buen-sazon.firebaseapp.com",
+  projectId: "cocina-economica-buen-sazon",
+  storageBucket: "cocina-economica-buen-sazon.firebasestorage.app",
+  messagingSenderId: "727140143465",
+  appId: "1:727140143465:web:04c4289ff485f69a56adf8",
+  measurementId: "G-9SZ6447107"
+};
+
+
+firebase.initializeApp(firebaseConfig);
+
+const auth = firebase.auth();
+
+const db = firebase.firestore();
+
+// 🔥 GUARDAR CLIENTE
+async function guardarCliente() {
+
+  let nombre = document.getElementById("nombre").value;
+
+  await db.collection("clientes").add({
+
+    nombre: nombre
+
+  });
+
+}
+
+/* CONTROL DE SESIÓN */
+
+auth.onAuthStateChanged(user => {
+
+  if(user){
+
+    document.getElementById("zonaPrivada")
+    .classList.remove("oculto");
+
+    document.getElementById("estado").innerText =
+    "✅ Sesión iniciada: " + user.email;
+
+    cargarCitas(); // 👈 AQUÍ SE AGREGA
+
+  }else{
+
+    document.getElementById("zonaPrivada")
+    .classList.add("oculto");
+
+    document.getElementById("estado").innerText =
+    "❌ No has iniciado sesión";
+
+  }
+
+});
+
+/* REGISTRO */
+
+function registrar(){
+
+  let email = document.getElementById("email").value;
+
+  let password = document.getElementById("password").value;
+
+  auth.createUserWithEmailAndPassword(email, password)
+
+  .then(() => {
+
+    alert("✅ Usuario registrado");
+
+  })
+
+  .catch(error => {
+
+    alert(error.message);
+
+  });
+
+}
+
+/* LOGIN */
+
+function login(){
+
+  let email = document.getElementById("email").value;
+
+  let password = document.getElementById("password").value;
+
+  auth.signInWithEmailAndPassword(email, password)
+
+  .then(() => {
+
+    alert("✅ Bienvenido");
+
+  })
+
+  .catch(() => {
+
+    alert("❌ Error en login");
+
+  });
+
+}
+
+/* LOGOUT */
+
+function logout(){
+
+  auth.signOut();
+
+  alert("👋 Sesión cerrada");
+
+}
+
+/* GUARDAR PEDIDO */
+
+function guardarCita(){
+
+  let nombre = document.getElementById("nombre").value;
+
+  let servicio = document.getElementById("servicio").value;
+
+  let select = document.getElementById("servicio");
+
+  let producto = select.value;
+
+  let precio = select.options[select.selectedIndex]
+  .getAttribute("data-precio");
+  // 🥤 BEBIDA
+  let bebidaSelect = document.getElementById("bebida");
+
+  let bebida = bebidaSelect.value;
+
+  let precioBebida = Number(
+    bebidaSelect.options[bebidaSelect.selectedIndex]
+    .getAttribute("data-precio") || 0
+  );
+
+
+  // 📦 CANTIDAD
+  let cantidad = document.getElementById("cantidad").value;
+
+
+  // 💰 TOTAL (comida + bebida)
+  let total =
+  (Number(precio) + precioBebida) * Number(cantidad);
+
+
+  let fecha = document.getElementById("fecha").value;
+
+  let hora = document.getElementById("horaEntrega").value;
+
+
+  // ⚠️ VALIDACIÓN
+  if(nombre == "" || servicio == "" || bebida == "" || fecha == "" || hora == ""){
+
+    alert("⚠️ Completa todos los campos");
+
+    return;
+
+  }
+  // 🔥 GUARDAR CLIENTE
+  guardarCliente();
+
+
+  // 💾 GUARDAR EN FIREBASE
+  db.collection("pedidos").add({
+
+    cliente: nombre,
+    producto: producto,
+    bebida: bebida,
+    precio: Number(precio),
+    precioBebida: precioBebida,
+    cantidad: Number(cantidad),
+    total: total,
+    fecha: fecha,
+    hora: hora,
+    usuario: auth.currentUser.email
+
+  })
+
+  .then(() => {
+
+    alert("✅ Pedido registrado");
+
+    document.getElementById("nombre").value = "";
+    document.getElementById("servicio").value = "";
+    document.getElementById("bebida").value = "";
+    document.getElementById("cantidad").value = "1";
+    document.getElementById("fecha").value = "";
+    document.getElementById("horaEntrega").value = "";
+
+  
+  })
+
+  .catch(error => {
+
+    alert("❌ Error: " + error);
+
+  });
+
+}
+
+/* MOSTRAR PEDIDOS */
+let limitePedidos = 2;
+function cargarCitas() {
+
+  let consulta = db.collection("pedidos");
+
+  // 🔐 SI HAY USUARIO LOGUEADO
+  if (auth.currentUser) {
+
+    consulta = consulta.where(
+      "usuario",
+      "==",
+      auth.currentUser.email
+    );
+
+  }
+
+  // 🔥 CONTAR TODOS LOS PEDIDOS
+  consulta.get().then(totalSnapshot => {
+
+    document.getElementById("contador").innerText =
+      "Total pedidos registrados: " + totalSnapshot.size;
+
+  });
+
+  // 🔥 CARGAR SOLO LOS NECESARIOS
+  consulta
+    .limit(limitePedidos)
+    .get()
+
+    .then(snapshot => {
+
+      let lista = document.getElementById("listaCitas");
+
+      lista.innerHTML = "";
+
+      if (snapshot.empty) {
+
+        lista.innerHTML =
+          "<p>No hay pedidos registrados</p>";
+
+        return;
+
+      }
+
+      snapshot.forEach(doc => {
+
+        let d = doc.data();
+
+        lista.innerHTML += `
+
+        <div class="pedido">
+
+        <h3>👤 ${d.cliente}</h3>
+
+        <p>🍽️ ${d.producto}</p>
+
+        <p>🥤 ${d.bebida || "Sin bebida"}</p>
+
+        <p>💰 Precio comida: $${d.precio}</p>
+
+        <p>🥤 Precio bebida: $${d.precioBebida}</p>
+
+        <p>📦 Cantidad: ${d.cantidad}</p>
+
+        <p>💵 Total: $${d.total}</p>
+
+        <p>📅 Fecha: ${d.fecha}</p>
+
+        <p>⏰ Hora: ${d.hora}</p>
+
+        <p>📧 Usuario: ${d.usuario}</p>
+
+</div>
+
+`;
+
+      });
+
+    })
+
+    .catch(error => {
+
+      console.error(error);
+
+    });
+
+}
+function verMas() {
+
+  limitePedidos += 2;
+
+  cargarCitas();
+
+}
+
+
+/* CARGAR PEDIDOS */
+
+cargarCitas();
+
+</script>
+
+</body>
+</html>
