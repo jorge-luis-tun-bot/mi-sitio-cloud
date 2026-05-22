@@ -703,23 +703,59 @@ async function cargarClima() {
     const descripcion = datos.weather[0].description;
 
     let recomendacion = "";
+    // RECOMENDACIÓN SEGÚN CLIMA
 
     if (temperatura > 30) {
-      recomendacion = "☀️ Hace calor, hidrátate bien antes de venir.";
-    } 
-    else if (temperatura < 20) {
-      recomendacion = "❄️ Clima fresco, ideal para comida caliente.";
-    } 
-    else {
-      recomendacion = "🌤️ Clima perfecto para comer en El Buen Sazón.";
-    }
-
+  recomendacion = `
+    ☀️ Hace calor, hidrátate bien.<br>
+    💧 Evita el sol intenso y cuida tu salud.
+  `;
+  } 
+   else if (temperatura < 20) {
+   recomendacion = `
+    ❄️ Clima fresco, ideal para comida caliente.<br>
+    🍲 Disfruta el momento y mantente abrigado.
+  `;
+  } 
+  else {
+  recomendacion = `
+    🌤️ Clima perfecto para comer en El Buen Sazón.<br>
+    😊 Aprovecha el día y relájate.
+  `;
+}
     document.getElementById("widget-clima").innerHTML = `
-      <h3>🌦️ Clima en ${ciudad}</h3>
-      <p>🌡️ ${temperatura}°C</p>
-      <p>${descripcion}</p>
-      <strong>${recomendacion}</strong>
-    `;
+  <div style="
+    max-width: 340px;
+    margin: 20px auto;
+    padding: 18px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, #e0f7ff, #ffffff);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+    font-family: Arial, sans-serif;
+    text-align: center;
+  ">
+
+    <h3 style="margin:0; color:#0077b6;">
+      🌦️ Clima en ${ciudad}
+    </h3>
+
+    <p style="font-size: 34px; margin: 10px 0; font-weight: bold;">
+      🌡️ ${temperatura}°C
+    </p>
+
+    <p style="font-style: italic; color:#555; margin-bottom:10px;">
+      ${descripcion}
+    </p>
+
+    <hr style="border: none; height: 1px; background: #ddd; margin: 10px 0;">
+
+    <p style="color:#333; font-size:14px; line-height:1.5;">
+      ${recomendacion}
+    </p>
+
+  </div>
+`;
+
 
   } catch (error) {
 
