@@ -330,7 +330,7 @@ img{
   <option data-precio="75" value="Costillas asadas">Costillas asadas - Orden $75</option>
   <option data-precio="45" value="Costillas asadas">Costillas asadas - Media orden $45</option>
 
-</select>
+</select>>
 
  <br>
 
@@ -367,6 +367,59 @@ value="1">
 
 <footer>
   <p>© 2026 Cocina Económica El Buen Sazón</p>
+
+  <!-- COMENTARIOS -->
+
+<section>
+
+  <h2>⭐ Califica tu experiencia</h2>
+
+  <input
+    type="text"
+    id="comentario"
+    placeholder="💬 Escribe un comentario">
+
+  <br><br>
+
+  <label>⭐ Calificación</label><br>
+
+  <select id="calificacion">
+
+    <option value="">
+      Selecciona una calificación
+    </option>
+
+    <option value="1">⭐ 1</option>
+    <option value="2">⭐⭐ 2</option>
+    <option value="3">⭐⭐⭐ 3</option>
+    <option value="4">⭐⭐⭐⭐ 4</option>
+    <option value="5">⭐⭐⭐⭐⭐ 5</option>
+
+  </select>
+
+  <br><br>
+
+  <button onclick="guardarComentario()">
+    ⭐ Enviar calificación
+  </button>
+
+  <hr>
+
+  <!-- AQUÍ SE MOSTRARÁN -->
+  <div id="listaComentarios"></div>
+
+</section>
+  <br><br>
+
+  <button onclick="guardarComentario()">
+    ⭐ Enviar calificación
+  </button>
+
+  <hr>
+
+  <div id="listaComentarios"></div>
+
+</section>
 </footer>
 
 <!-- FIREBASE -->
@@ -401,11 +454,18 @@ const db = firebase.firestore();
 // 🔥 GUARDAR CLIENTE
 async function guardarCliente() {
 
-  let nombre = document.getElementById("nombre").value;
+  let nombre =
+    document.getElementById("nombre").value;
 
-  await db.collection("clientes").add({
+  let usuario =
+    auth.currentUser.email;
 
-    nombre: nombre
+  await db.collection("clientes")
+  .doc(auth.currentUser.uid)
+  .set({
+
+    nombre: nombre,
+    usuario: usuario
 
   });
 
@@ -542,7 +602,7 @@ function guardarCita(){
     return;
 
   }
-  // 🔥 GUARDAR CLIENTE
+  //  GUARDAR CLIENTE
   guardarCliente();
 
 
@@ -700,6 +760,121 @@ function verMas() {
   cargarCitas();
 
 }
+
+
+/* ==========================
+   COMENTARIOS
+========================== */
+
+function guardarComentario() {
+
+  let calificacion =
+    document.getElementById(
+      "calificacion"
+    ).value;
+
+  let comentario =
+    document.getElementById(
+      "comentario"
+    ).value;
+
+  if (calificacion === "") {
+
+    alert(
+      "⚠️ Selecciona una calificación"
+    );
+
+    return;
+  }
+
+  db.collection("comentarios").add({
+
+    comentario: comentario,
+
+    calificacion:
+      Number(calificacion),
+
+    usuario:
+      auth.currentUser.email,
+
+    fecha:
+      new Date().toLocaleDateString(
+        "es-MX"
+      )
+
+  })
+
+  .then(() => {
+
+    alert(
+      "✅ Calificación enviada"
+    );
+
+    document.getElementById(
+      "comentario"
+    ).value = "";
+
+    document.getElementById(
+      "calificacion"
+    ).value = "";
+
+    cargarComentarios();
+
+  })
+
+  .catch(error => {
+
+    alert(
+      "❌ Error: " + error
+    );
+
+  });
+
+}
+
+
+/* MOSTRAR COMENTARIOS */
+
+async function cargarComentarios() {
+
+  let lista =
+    document.getElementById(
+      "listaComentarios"
+    );
+
+  lista.innerHTML = "";
+
+  const snapshot =
+    await db.collection(
+      "comentarios"
+    ).get();
+
+  snapshot.forEach(doc => {
+
+    let d = doc.data();
+
+    lista.innerHTML += `
+
+      <div class="pedido">
+
+        <p>⭐ ${d.calificacion}/5</p>
+
+        <p>📧 ${d.usuario}</p>
+
+        <p>📅 ${d.fecha}</p>
+
+      </div>
+
+    `;
+
+  });
+
+}
+
+
+/* CARGAR COMENTARIOS */
+
+cargarComentarios();
 // ======== CLIMA =========
 
 async function cargarClima() {
