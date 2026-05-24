@@ -241,7 +241,7 @@ img{
   <input type="text" id="nombre" placeholder="👤 Nombre completo"><br>
 
   <!-- SELECT DEL MENÚ -->
--->
+
   <!-- BEBIDA -->
 <label>🥤 Selecciona una bebida</label><br>
 
@@ -509,7 +509,7 @@ function guardarCita(){
 
   let precio = select.options[select.selectedIndex]
   .getAttribute("data-precio");
-  // 🥤 BEBIDA
+  //  BEBIDA
   let bebidaSelect = document.getElementById("bebida");
 
   let bebida = bebidaSelect.value;
@@ -520,11 +520,11 @@ function guardarCita(){
   );
 
 
-  // 📦 CANTIDAD
+  // CANTIDAD
   let cantidad = document.getElementById("cantidad").value;
 
 
-  // 💰 TOTAL (comida + bebida)
+  // TOTAL (comida + bebida)
   let total =
   (Number(precio) + precioBebida) * Number(cantidad);
 
@@ -534,7 +534,7 @@ function guardarCita(){
   let hora = document.getElementById("horaEntrega").value;
 
 
-  // ⚠️ VALIDACIÓN
+  // VALIDACIÓN
   if(nombre == "" || servicio == "" || bebida == "" || fecha == "" || hora == ""){
 
     alert("⚠️ Completa todos los campos");
@@ -586,52 +586,53 @@ function guardarCita(){
 
 /* MOSTRAR PEDIDOS */
 let limitePedidos = 2;
-function cargarCitas() {
 
-  let consulta = db.collection("pedidos");
+async function cargarCitas() {
 
-  // 🔐 SI HAY USUARIO LOGUEADO
-  if (auth.currentUser) {
+  try {
 
-    consulta = consulta.where(
-      "usuario",
-      "==",
-      auth.currentUser.email
+    //  OBTENER DATOS DESDE GOOGLE SHEETS
+    const respuesta = await fetch(
+      "https://script.google.com/macros/s/AKfycbx03MCxXVZFYEmeMtry0wuyr7j2W5n-sqGGmX6wJwVXTQyRmWhZusi4YPM4PASLvyOH/exec"
     );
 
-  }
+    const pedidos = await respuesta.json();
 
-  // 🔥 CONTAR TODOS LOS PEDIDOS
-  consulta.get().then(totalSnapshot => {
+    let pedidosFiltrados = pedidos;
 
+    // SI HAY USUARIO LOGUEADO
+    if (auth.currentUser) {
+
+      pedidosFiltrados = pedidos.filter(
+        pedido =>
+          pedido.usuario === auth.currentUser.email
+      );
+
+    }
+
+    // CONTAR TODOS LOS PEDIDOS
     document.getElementById("contador").innerText =
-      "Total pedidos registrados: " + totalSnapshot.size;
+      "Total pedidos registrados: " +
+      pedidosFiltrados.length;
 
-  });
+    // CARGAR SOLO LOS NECESARIOS
+    let lista =
+      document.getElementById("listaCitas");
 
-  // 🔥 CARGAR SOLO LOS NECESARIOS
-  consulta
-    .limit(limitePedidos)
-    .get()
+    lista.innerHTML = "";
 
-    .then(snapshot => {
+    if (pedidosFiltrados.length === 0) {
 
-      let lista = document.getElementById("listaCitas");
+      lista.innerHTML =
+        "<p>No hay pedidos registrados</p>";
 
-      lista.innerHTML = "";
+      return;
 
-      if (snapshot.empty) {
+    }
 
-        lista.innerHTML =
-          "<p>No hay pedidos registrados</p>";
-
-        return;
-
-      }
-
-      snapshot.forEach(doc => {
-
-        let d = doc.data();
+    pedidosFiltrados
+      .slice(0, limitePedidos)
+      .forEach(d => {
 
         lista.innerHTML += `
 
@@ -651,27 +652,47 @@ function cargarCitas() {
 
         <p>💵 Total: $${d.total}</p>
 
-        <p>📅 Fecha: ${d.fecha}</p>
+        <p>📅 Fecha: ${
+          d.fecha
+            ? new Date(d.fecha)
+              .toLocaleDateString("es-MX")
+            : ""
+        }</p>
 
-        <p>⏰ Hora: ${d.hora}</p>
+        <p>⏰ Hora: ${
+          d.hora
+            ? new Date(d.hora)
+              .toLocaleTimeString(
+                "es-MX",
+                {
+                  hour: "2-digit",
+                  minute: "2-digit"
+                }
+              )
+            : ""
+        }</p>
 
         <p>📧 Usuario: ${d.usuario}</p>
 
-</div>
+        </div>
 
 `;
 
       });
 
-    })
+  } catch(error) {
 
-    .catch(error => {
+    console.error(error);
 
-      console.error(error);
+    document.getElementById(
+      "listaCitas"
+    ).innerHTML =
+      "<p>❌ Error cargando pedidos</p>";
 
-    });
+  }
 
 }
+
 function verMas() {
 
   limitePedidos += 2;
@@ -679,12 +700,12 @@ function verMas() {
   cargarCitas();
 
 }
-// 🌦️ ========= CLIMA =========
+// ======== CLIMA =========
 
 async function cargarClima() {
 
   const ciudad = "Chichimila,Yucatan,MX";
-  const apiKey = "ce7a0aa6815c08fc39793d921f9a1df6";// 👈 AQUÍ PONES TU CLAVE REAL
+  const apiKey = "ce7a0aa6815c08fc39793d921f9a1df6";
 
   const url =
   `https://api.openweathermap.org/data/2.5/weather?q=${ciudad}&appid=${apiKey}&units=metric&lang=es`;
