@@ -405,20 +405,6 @@ value="1">
 
   <hr>
 
-  <!-- AQUÍ SE MOSTRARÁN -->
-  <div id="listaComentarios"></div>
-
-</section>
-  <br><br>
-
-  <button onclick="guardarComentario()">
-    ⭐ Enviar calificación
-  </button>
-
-  <hr>
-
-  <div id="listaComentarios"></div>
-
 </section>
 </footer>
 
@@ -804,78 +790,33 @@ function guardarComentario() {
 
   })
 
-  .then(() => {
+ .then(() => {
 
-    alert(
-      "✅ Calificación enviada"
-    );
+  alert(
+    "✅ Calificación enviada"
+  );
 
-    document.getElementById(
-      "comentario"
-    ).value = "";
+  document.getElementById(
+    "comentario"
+  ).value = "";
 
-    document.getElementById(
-      "calificacion"
-    ).value = "";
+  document.getElementById(
+    "calificacion"
+  ).value = "";
 
-    cargarComentarios();
+})
 
-  })
+.catch(error => {
 
-  .catch(error => {
+  alert(
+    "❌ Error: " + error
+  );
 
-    alert(
-      "❌ Error: " + error
-    );
-
-  });
+});
 
 }
 
 
-/* MOSTRAR COMENTARIOS */
-
-async function cargarComentarios() {
-
-  let lista =
-    document.getElementById(
-      "listaComentarios"
-    );
-
-  lista.innerHTML = "";
-
-  const snapshot =
-    await db.collection(
-      "comentarios"
-    ).get();
-
-  snapshot.forEach(doc => {
-
-    let d = doc.data();
-
-    lista.innerHTML += `
-
-      <div class="pedido">
-
-        <p>⭐ ${d.calificacion}/5</p>
-
-        <p>📧 ${d.usuario}</p>
-
-        <p>📅 ${d.fecha}</p>
-
-      </div>
-
-    `;
-
-  });
-
-}
-
-
-/* CARGAR COMENTARIOS */
-
-cargarComentarios();
-// ======== CLIMA =========
 
 async function cargarClima() {
 
